@@ -1,0 +1,46 @@
+import matplotlib.pyplot as plt
+tijdsintervallen = int(input("Hoeveel tijdsintervallen moeten er zijn?:"))
+
+prooidieren = 0.9
+roofdieren = 0.4
+kinderen = 0.8
+vangst = 1.2
+groei = 0.25
+sterftecijfer = 0.4
+roofdierenoverzicht = [roofdieren]
+prooidierenoverzicht = [prooidieren]
+
+tijd = [0]
+
+def maak_grafiek(x, y, y2):
+    plt.plot(x, y,  label = "Prooidieren")
+    plt.plot(x, y2, label = "Roofdieren")
+    if max(prooidierenoverzicht) >= max(roofdierenoverzicht):
+        plt.ylim(0, max(prooidierenoverzicht))
+    else:
+        plt.ylim(0, max(roofdierenoverzicht))
+    plt.xlabel('Tijdsintervallen')
+    plt.ylabel('Hoeveelheid dieren')
+    plt.title('Ecosysteem')
+    plt.legend()
+    plt.show()
+
+for x in range(1, tijdsintervallen + 1):
+    prooidieren = prooidieren + (kinderen * prooidieren - vangst * prooidieren * roofdieren)
+    roofdieren = roofdieren + (groei * prooidieren * roofdieren - sterftecijfer * roofdieren)
+    roofdierenoverzicht.append(float("{0:.5f}".format(roofdieren)))
+    prooidierenoverzicht.append(float("{0:.5f}".format(prooidieren)))
+
+    tijd.append(x)
+
+    if (roofdieren < 0):
+        maak_grafiek(tijd, prooidierenoverzicht, roofdierenoverzicht)
+        break
+
+    elif (prooidieren < 0):
+        maak_grafiek(tijd, prooidierenoverzicht , roofdierenoverzicht)
+        break
+
+    if x == tijdsintervallen:
+        maak_grafiek(tijd , prooidierenoverzicht , roofdierenoverzicht)
+        break
